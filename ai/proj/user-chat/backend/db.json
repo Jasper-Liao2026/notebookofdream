@@ -1,0 +1,30 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "占宇轩",
+      "hometown": "中国江西"
+    },
+    {
+      "id": "2",
+      "name": "占宇轩",
+      "hometown": "江西"
+    },
+    {
+      "id": "3",
+      "name": "占宇轩",
+      "hometown": "江西"
+    },
+    {
+      "id": "4",
+      "name": "占宇轩",
+      "hometown": "江西"
+    },
+    {
+      "id": "ZXvB-DF6rrA",
+      "name": "马化腾",
+      "hometown": "深圳"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

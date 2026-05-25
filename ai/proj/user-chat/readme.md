@@ -32,16 +32,12 @@ http://localhost:3000/books
 http://localhost:3000/posts
 http://localhost:3000/posts/:id  某篇文章
 
--htpp的动作
+- htpp的动作
     CRUD 增删查改
-    GET  http://localhost:3000/posts/:id
-    POST http://localhost:3000/posts 
-
-
-
-
-
-
+    GET  read http://localhost:3000/posts/:id
+    POST create http://localhost:3000/posts 
+    PUT/PATCH Update 
+    DELETE Delete
 
 - js node 后端初始化 
     npm init -y
@@ -56,11 +52,12 @@ http://localhost:3000/posts/:id  某篇文章
     json文件 javascript object notation{key:val...}
     excal csv 文本 pdf...
 
-
+## 前端
+- 前端三剑客 模块化
 
 
 ## prompt 
 - 加上模块化的约束
-- 
+- 请你帮我设计users 用户数据接口，请遵守restful机制 
 
 

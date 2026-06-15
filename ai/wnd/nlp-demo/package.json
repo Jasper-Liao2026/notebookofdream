@@ -1,5 +1,5 @@
 {
-  "name": "demo1",
+  "name": "nlp-demo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,9 +9,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
+  "type": "commonjs",
   "dependencies": {
     "dotenv": "^17.4.2",
-    "openai": "^6.41.0"
+    "openai": "^6.42.0"
   }
 }

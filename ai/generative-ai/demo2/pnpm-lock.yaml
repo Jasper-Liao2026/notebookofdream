@@ -11,9 +11,6 @@ importers:
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
-      openai:
-        specifier: ^6.41.0
-        version: 6.41.0
 
 packages:
 
@@ -21,19 +18,6 @@ packages:
     resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
     engines: {node: '>=12'}
 
-  openai@6.41.0:
-    resolution: {integrity: sha512-IGWPopZq6Rjoynjfb3NSLf/z2MTw7UiOsm9TAjPGAjUESH7Uq41Trg4QWehBEn58p74i+m7uoRPV2vXcpPXhyA==}
-    peerDependencies:
-      ws: ^8.18.0
-      zod: ^3.25 || ^4.0
-    peerDependenciesMeta:
-      ws:
-        optional: true
-      zod:
-        optional: true
-
 snapshots:
 
   dotenv@17.4.2: {}
-
-  openai@6.41.0: {}

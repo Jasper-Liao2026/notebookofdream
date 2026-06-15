@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //创建一个空对象
+        //Object 是顶层对象
+    function Person(name,age){
+        //构造实例
+        console.log(this)
+        this.name=name
+        this.age=age
+    }
+    //原型对象上的方法是公用的
+    Person.prototype.say=function(){
+        console.log(`我叫${this.name}`)
+    }
+    Person.prototype.timeMF=function(){
+        console.log(`时间管理魔法`)
+    }
+    const cxk=new Person('蔡徐坤',18)
+    console.log(cxk.toString())
+    </script>
+</body>
+</html>

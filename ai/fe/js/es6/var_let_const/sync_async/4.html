@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    console.log("start");
+    // fetch底层是promise
+    fetch("https://api.deepseek.com/chat/completions",{
+      method:"POST"
+    }).then((data)=>{
+        console.log(err)
+    }).catch((err)=>{
+        console.log(err)
+        console.log()
+    })
+    
+    console.log("end");
+    </script>
+</body>
+</html>

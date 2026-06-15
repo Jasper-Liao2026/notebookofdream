@@ -1,0 +1,17 @@
+// 
+import client from './client.mjs'
+export async function getCompletions(prompt){
+    return await client.chat.completions.create({
+        model:process.env.DEEPSEEK_API_MODEL,
+        messages:[{role:"user",content:prompt}],
+    })
+}
+export async function getCompletion(prompt){
+    const response=await client.chat.completions.create({
+        model:process.env.DEEPSEEK_API_MODEL,
+        messages:[{role:"user",content:prompt}],
+    })
+    return response.choices[0].message.content;
+}
+
+export async function getImage(prompt){}

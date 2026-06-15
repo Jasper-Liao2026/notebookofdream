@@ -59,5 +59,6 @@ http://localhost:3000/posts/:id  某篇文章
 ## prompt 
 - 加上模块化的约束
 - 请你帮我设计users 用户数据接口，请遵守restful机制 
+- 帮我编写首页，使用bootstrap css 框架，使用语义化标签
 
 

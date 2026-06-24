@@ -8,6 +8,8 @@
 //列表转树
 //先拿到第一层，选中了之后，显示相应的第二层....
 const flatList=[
+
+    
     // 1,2,3,[4,[5,6]]
     {id:1,name:'一级菜单A',parentId:0} ,//parentId 为父节点
     {id:2,name:'一级菜单B',parentId:0},

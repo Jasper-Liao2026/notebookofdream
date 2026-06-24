@@ -1,0 +1,12 @@
+{
+  "interval_minutes": 30,
+  "branch": "main",
+  "files": [
+    ".claude",
+    "ai",
+    "algorithm",
+    "interview",
+    "jiama"
+  ],
+  "commit_prefix": "Auto"
+}

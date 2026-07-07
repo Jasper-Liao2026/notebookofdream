@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const getStory = async () =>
+            fetch('https://v1.hitokoto.cn/?c=i&encode=json').then(r => r.json())
+
+        const getRatp = async () =>
+            fetch('https://data.ratp.fr/api/datasets/1.0/search/?q=paris').then(r => r.json())
+
+        async function main() {
+            // 不存在依赖关系，并行以下Promise 一系列静态方法
+            // 并发的效果：参数是promise数组
+            // 不管谁先解决，resolve的结果会按promise数组顺序来收集
+            const res = await Promise.all([getRatp(), getStory()])
+            console.log(res)
+            const jsonPromises=res.map(item=>item.json())
+            const result =await Promise.all(jsonPromises)
+            console.log(result)
+        }
+        main()
+    </script>
+</body>
+</html>

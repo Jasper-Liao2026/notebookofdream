@@ -33,7 +33,7 @@ const model = new ChatOpenAI({
 const modelWithTools = model.bindTools(tools)
 
 const case1 = `创建应该功能丰富的React TodoList 应用：
-1.创建项目：pnpm create react-todo-app --template react-ts
+1.创建项目：echo pnpm create react-todo-app --template react-ts
 2.修改src/app.tsx，实现完整功能的TodoList：
 - 添加、删除、标记完成
 - 分类筛选（全部/进行中/已完成）
@@ -95,7 +95,7 @@ async function runAgentWithTools(query,maxIterations=30){
         }
       }
   }
-  return messages
+  return messages[messages.length-1].content
 }
 
 try{

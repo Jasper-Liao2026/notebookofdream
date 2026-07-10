@@ -30,10 +30,10 @@ const model = new ChatOpenAI({
     apiKey: process.env.DEEPSEEK_API_KEY,
     configuration: { baseURL: process.env.DEEPSEEK_API_BASE_URL }
 })
-const modelWithTools = model.bindTools(tools)
+  const modelWithTools = model.bindTools(tools)
 
 const case1 = `创建应该功能丰富的React TodoList 应用：
-1.创建项目：echo pnpm create react-todo-app --template react-ts
+1.创建项目：pnpm create react-todo-app --template react-ts
 2.修改src/app.tsx，实现完整功能的TodoList：
 - 添加、删除、标记完成
 - 分类筛选（全部/进行中/已完成）
@@ -72,11 +72,10 @@ async function runAgentWithTools(query,maxIterations=30){
 
 回复要简洁，只说做了什么`),
     new HumanMessage(query)
-
-
   ]
   //ReAct 循环
   for(let i=0;i<maxIterations;i++){
+    console.log(chalk.bgGreen(`正在等待ai思考...`))
     const response = await modelWithTools.invoke(messages)
     messages.push(response)
     if(!response.tool_calls||response.tool_calls.length===0){

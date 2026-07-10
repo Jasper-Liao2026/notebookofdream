@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "my-mcp-server": {
+      "command": "node",
+      "args": ["c:/Users/liaoh/Desktop/学习/ai/agent_in_action/mcp-demo/src/my-mcp-server.mjs"]
+    }
+  }
+}

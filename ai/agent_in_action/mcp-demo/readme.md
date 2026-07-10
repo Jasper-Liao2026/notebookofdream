@@ -24,3 +24,21 @@ ai agent 是MCP客户端(host)，可以通过MCP协议调用各种MCP Server，c
 他和fetch 不同 不是接口调用 不是拿接口数据，他是要扩展Context (tool&resource) 
 
 ## MCP Tool
+
+
+## resources
+- MCP stdio/http 跨进程提供 tool/resource/prompt
+tool最常见和 tool use ，跨进程
+- IPC
+    父子进程 child-process
+    其他语言、远程 client(child-process MultiServerMCPClient)和 MCP Server 通信
+- js单线程 异步无阻塞 主线程里面的异步
+
+- resource可以作为SystemMessage prompt的一部分 成为Context
+- server 里 registerResource
+    URL
+
+    - host 
+    MultiServerMCPClient getResources
+    Object.entries 拼成字符串
+- RAG 之外 丰富上下文的一种手段 文档，没有那么长的上下文窗口大小

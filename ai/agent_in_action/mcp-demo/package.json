@@ -2,9 +2,11 @@
   "name": "mcp-demo",
   "version": "1.0.0",
   "description": "- 这里的tool有什么问题？\r 1.只能在我们这个项目里面使用，不能在其他项目里面使用\r 2.node 写的，如何在java/python/rust 写的tool呢？",
-  "main": "my-mcp-server.mjs",
+  "main": "src/my-mcp-server.mjs",
   "scripts": {
-    "start": "node my-mcp-server.mjs"
+    "start": "node src/my-mcp-server.mjs",
+    "agent": "node src/langchain-mcp-test.mjs",
+    "check": "node --check src/my-mcp-server.mjs && node --check src/langchain-mcp-test.mjs"
   },
   "keywords": [],
   "author": "",

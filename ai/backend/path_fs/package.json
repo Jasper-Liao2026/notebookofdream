@@ -1,0 +1,13 @@
+{
+  "name": "path_fs",
+  "version": "1.0.0",
+  "description": "- path.join & path.resolve\r 都可以拼接路径\r 区别：\r - resolve 会将多个路径拼接成一个绝对路径，返回一个解析之后的绝对路径\r 如果传入相对路径，会以当前工作目录为基准，计算绝对路径；如果传入绝对路径，则以传入的绝对路径为准",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

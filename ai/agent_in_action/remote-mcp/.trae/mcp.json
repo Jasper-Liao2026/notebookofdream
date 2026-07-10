@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "amap-maps-http": {
+      "url": "https://mcp.amap.com/mcp?key=REPLACE_WITH_YOUR_AMAP_WEB_SERVICE_KEY"
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:/Users/liaoh/Desktop/学习/ai/agent_in_action"
+      ]
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import { MultiServerMCPClient } from '@langchain/mcp-adapters';
 import { ChatOpenAI } from '@langchain/openai';
 import chalk from 'chalk';
@@ -7,6 +7,9 @@ import {
     SystemMessage,
     ToolMessage
 } from '@langchain/core/messages';
+
+dotenv.config();
+dotenv.config({ path: '../mcp-demo/.env' });
 
 const model = new ChatOpenAI({
   modelName:'deepseek-v4-pro',
@@ -48,17 +51,60 @@ const mcpClient = new MultiServerMCPClient({
     }
 })
 
-const tools =await mcpClient.getTools()
-console.log(tools)
-const modelWithTools= model.bindTools(tools)
+const tools = await mcpClient.getTools()
+console.error(`已加载 ${tools.length} 个 MCP 工具：`)
+console.error(tools.map(tool => `- ${tool.name}`).join('\n'))
+const modelWithTools = model.bindTools(tools)
 
-async function runAgentWithTools(query,maxIterations=30){
-  const messages=[
+async function runAgentWithTools(query, maxIterations = 30) {
+  const messages = [
     new HumanMessage(query)
   ]
-  for(let i=0;i<maxIterations30;i++){
-    console.log(chalk.bgGreen(`第${i+1}轮迭代`))
-    const response =await modelWithTools.invoke(messages)
-    if(!response.tools_call)
+
+  for(let i = 0; i < maxIterations; i++) {
+    console.error(chalk.blue(`第${i + 1}次迭代`))
+    const response = await modelWithTools.invoke(messages)
+    messages.push(response)
+
+    if(!response.tool_calls || response.tool_calls.length === 0) {
+      console.error(chalk.bgRed(`AI回答: ${response.content}`))
+      return response.content
+    }
+
+    console.error(chalk.bgBlue(`工具调用：${response.tool_calls.map(t => t.name).join(', ')}`))
+
+    for(const toolCall of response.tool_calls) {
+      const foundTool = tools.find(t => t.name === toolCall.name)
+        if(foundTool) {
+          let contentStr
+          try {
+            const toolResult = await foundTool.invoke(toolCall.args)
+            // mcp tool 返回一般字符串
+            // haiyoukeneng 处理对象
+            if(typeof toolResult === 'string') {
+              contentStr = toolResult
+              // str
+              // filesystem {text}
+            } else if (toolResult && toolResult.text) {
+              contentStr = toolResult.text
+              // str
+            }
+          } catch (error) {
+            contentStr = `工具 ${toolCall.name} 调用失败：${error.message}`
+          }
+          messages.push(new ToolMessage({
+            content: contentStr,
+            tool_call_id: toolCall.id,
+          }))
+        }
+    }
   }
+
+  return messages[messages.length - 1].content
+}
+
+try {
+  await runAgentWithTools("北京南站附近的酒店，最近的 3 个酒店，拿到酒店图片，打开浏览器，展示每个酒店的图片，每个 tab 一个 url 展示，并且在把那个页面标题改为酒店名");
+} finally {
+  await mcpClient.close();
 }

@@ -26,7 +26,7 @@ const embedding = new OpenAIEmbeddings(
     configuration: {
       baseURL: process.env.QENWEN_BASE_URL,
     }
-  }
+  }   
 )
 
 const documents = [

@@ -9,6 +9,31 @@ import {
     //递归
     RecursiveCharacterTextSplitter
 } from '@langchain/textsplitters'
+
+import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
+import {
+  ChatOpenAI,
+  OpenAIEmbeddings,
+} from '@langchain/openai';
+
+const model = new ChatOpenAI({
+  temperature: 0,
+  model: process.env.MODEL_NAME,
+  apiKey: process.env.OPENAI_API_KEY,
+  configuration: {
+    baseURL: process.env.OPENAI_BASE_URL,
+  },
+});
+
+const embeddings = new OpenAIEmbeddings({
+  apiKey: process.env.QENWEN_API_KEY,
+  model: process.env.EMBEDDINGS_MODEL_NAME,
+  configuration: {
+    baseURL: process.env.QENWEN_BASE_URL
+  },
+});
+
+
 // 访问网址，提取文档内容
 // cheerio 可以传递css 选择器 来提取文档的内容
 // 爬取指定内容 + Document标准
@@ -35,9 +60,44 @@ const documents = await cheerioLoader.load()// 加载文档
 //不完美的地方，直接硬切 chunkOverlap来补救 重叠切割
 const textSplitter = new RecursiveCharacterTextSplitter({
     chunkSize:400,//每个chunk 大小  document，切片chunk
+    //递归尝试
     separators:["。","!","?"],
+    //文字会被中间切断语义？通篇没有标点 ，菜单 佛经 古文
+    //如果切断了，就会用overlap空间来补救 10%
+    //如果没有被切断，不会overlap的
     chunkOverlap:100,
 })
 
 const splitDocuments= await textSplitter.splitDocuments(documents);
 console.log(splitDocuments);
+console.log(`文档分割完成，共${splitDocuments.length}个chunks`);
+console.log("创建向量数据库");
+
+
+
+const vectorStores = await MemoryVectorStore.fromDocuments(
+  splitDocuments,
+  embeddings
+);
+console.log("向量存储完成");
+const retriever = vectorStores.asRetriever({ k: 3 })
+const question = "fs模块有哪些api"
+
+// 检索相关文档
+const docs = await retriever.invoke(question)
+
+// 拼上下文
+const context = docs
+  .map((doc, i) => `[片段${i + 1}]\n${doc.pageContent}`)
+  .join('\n\n---\n\n')
+
+// Augmented
+const prompt = `你是一个文章辅助阅读助手，根据文章内容来解答
+文章内容：
+${context}
+问题：
+${question}`;
+
+const answer = await model.invoke(prompt)
+console.log(answer.content)
+

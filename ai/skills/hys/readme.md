@@ -30,3 +30,7 @@ anthorpic 官方推出的 skill - creator 标准化、简化skill的封装
     使用yaml格式隔开  {} .env key=value
     name
     description 描述功能，给llm 判断是否要使用的
+
+## 场景二
+每天，我们都被海量的AI信息淹没，想要了解行业动态，但没有时间一个一个网站去刷？
+重复但必须得学习/工作

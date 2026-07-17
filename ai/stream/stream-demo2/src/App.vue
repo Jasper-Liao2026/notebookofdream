@@ -123,6 +123,9 @@ const update = async () => {
       //     这是解构赋值（ES6），reader?.read() 返回的 {done, value} 被拆开
       //     reader对象兼容性：老浏览器不一定支持 ReadableStream，?. 做兼容
 
+      //data:[Done]
+
+
       done = doneReading;
       // 把里层读到的 done 传给外层的循环开关变量
 
@@ -130,6 +133,8 @@ const update = async () => {
       // chunk 一小块 json 格式
       // delta 偏移量 一小块一小块的增量
       // 解析 json 字符串 choices[0].delta.content
+      //json 断开的可能 动态化 butter不一定有值
+      //如果有，上一个chunk 最后一行，不完整的json
       const chunkValue = buffer + decoder.decode(value);
       //    ^^^^^^^^^               ^^^^^^
       //    本轮要处理的文本         把上轮没处理完的 buffer 拼到前面
@@ -152,14 +157,35 @@ const update = async () => {
       // 返回一个新数组，只保留满足条件的元素        JavaScript 字符串方法是 startsWith（注意 s），不是 startWith
       // 这里只保留以 'data: ' 开头的行            缺少 s 会导致运行时错误：line.startWith is not a function
 
-      // ⚠️ 当前代码到这里就结束了，lines 数组拿到后没有进一步处理
-      // 还需要做：
-      //   1. 遍历 lines
-      //   2. 去掉 "data: " 前缀（line.slice(6)）
-      //   3. 判断是否为 '[DONE]'，是则结束
-      //   4. JSON.parse() 解析
-      //   5. 取 choices[0].delta.content 拼到 content.value
-      //   6. buffer 要存最后不完整的行（lines.pop()）
+      // 遍历所有完整的消息行（已按 \n\n 分割完毕，每条都是一个完整的 data: 块）
+      for(const line of lines){
+        // line = "data: {...json...}"，slice(6) 切掉前6个字符 "data: "，得到纯 JSON 字符串
+        const incoming = line.slice(6);
+
+        // 如果内容是 "[DONE]"，说明流结束
+        // 有两种结束方式：
+        //   1. 在最后一条 JSON 里直接设置 finish_reason: "stop"（此时 delta.content 为空串）
+        //   2. 单独发送一条 data: [DONE]（纯文本，不是 JSON，不能 parse，所以要提前判断）
+        if(incoming === '[DONE]'){
+          done = true;
+          break;  // 跳出 for 循环，外层 while(!done) 也会随之结束
+        }
+
+        // incoming 是 JSON 字符串，结构大致为：
+        // {"choices":[{"delta":{"content":"生成的文字"},"finish_reason":null}]}
+        try{
+          const data = JSON.parse(incoming);           // JSON 字符串 → JS 对象
+          const delta = data.choices[0].delta.content; // 取出本次新生成的 token 文本（1~2个字）
+          if(data && delta){                                     // 如果解析成功且有数据
+            content.value += delta;                     // 追加到显示内容后面，页面实时逐字更新
+          }
+        }catch(err){
+          // ⚠️ JSON 解析失败 → 说明数据包被 TCP 截断了
+          // 例如收到的刚好是 "data: {"content":"你好" ← 少了一个 }
+          // 此时把它拼回 "data: " 前缀，放回 buffer，等下一次 onData 补全后再解析
+          buffer = `data: ${incoming}`;
+        }
+      }
 
     }
 

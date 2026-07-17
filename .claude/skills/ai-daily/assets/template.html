@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>甜甜AI日报 - {{DATE}}</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #6b7280;
+    --accent: #6366f1;
+    --accent-soft: #eef2ff;
+    --border: #e5e7eb;
+    --shadow: 0 1px 3px rgba(0,0,0,.06);
+    --shadow-hover: 0 8px 24px rgba(99,102,241,.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 40px 20px 60px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 40px; }
+  header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(120deg, #6366f1, #ec4899);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 1px;
+  }
+  header .date { color: var(--text-sub); font-size: 15px; margin-top: 8px; }
+  header .divider {
+    width: 48px; height: 3px; border-radius: 2px;
+    background: linear-gradient(90deg, #6366f1, #ec4899);
+    margin: 16px auto 0;
+  }
+  .card {
+    display: block;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent);
+  }
+  .card h2 { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+  .card .summary { font-size: 14.5px; color: #374151; margin-bottom: 14px; }
+  .card .meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag {
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .source { font-size: 12.5px; color: var(--text-sub); }
+  footer { text-align: center; margin-top: 40px; color: var(--text-sub); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>甜甜AI日报</h1>
+    <div class="date">{{DATE}}</div>
+    <div class="divider"></div>
+  </header>
+
+  <!-- 卡片结构示例（每条资讯复制一份，替换内容）：
+  <a class="card" href="原文链接" target="_blank" rel="noopener">
+    <h2>中文标题</h2>
+    <p class="summary">50-100字中文摘要</p>
+    <div class="meta">
+      <div class="tags">
+        <span class="tag">标签1</span>
+        <span class="tag">标签2</span>
+      </div>
+      <span class="source">来源媒体 · 发布时间</span>
+    </div>
+  </a>
+  -->
+  {{CARDS}}
+
+  <footer>用最少的时间，掌握最新的 AI 动态</footer>
+</div>
+</body>
+</html>

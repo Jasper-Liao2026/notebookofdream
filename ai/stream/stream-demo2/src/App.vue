@@ -149,9 +149,9 @@ const update = async () => {
       // data: {开始 又有数据来了}
       // data: {开始 又有数据来了}
 
-      const lines = chunkValue.split('\n')
+      const lines = chunkValue.split('\n').filter((line) => line.startsWith('data: '))
       //                   ^^^^^ 字符串按换行符 \n 切分成数组
-        .filter((line) => line.startsWith('data: '))
+      
       // ^^^^^^                                   ^^
       // 数组的 filter 方法                        ⚠️ BUG：正确拼写是 startsWith
       // 返回一个新数组，只保留满足条件的元素        JavaScript 字符串方法是 startsWith（注意 s），不是 startWith

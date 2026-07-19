@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORS 跨域可视化</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: #38bdf8;
+  }
+  .subtitle {
+    color: #94a3b8;
+    margin-bottom: 40px;
+    font-size: 0.95rem;
+  }
+
+  /* 场景卡片 */
+  .scenarios {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .scenario {
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: 2px solid #334155;
+    background: #1e293b;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    color: #94a3b8;
+  }
+  .scenario:hover { border-color: #38bdf8; color: #e2e8f0; }
+  .scenario.active { background: #1e3a5f; border-color: #38bdf8; color: #38bdf8; box-shadow: 0 0 20px rgba(56,189,248,0.2); }
+
+  /* 主演示区 */
+  .stage {
+    width: 100%;
+    max-width: 900px;
+    background: #1e293b;
+    border-radius: 20px;
+    border: 1px solid #334155;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 浏览器框 */
+  .browser {
+    background: #0f172a;
+    border-radius: 16px;
+    border: 2px solid #475569;
+    padding: 20px 20px 30px;
+    position: relative;
+    min-height: 200px;
+  }
+  .browser-url {
+    background: #1e293b;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #38bdf8;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .browser-url .lock { font-size: 1rem; }
+  .browser-page {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  /* 服务器 */
+  .server {
+    width: 200px;
+    text-align: center;
+  }
+  .server-box {
+    background: #1e293b;
+    border: 2px solid #475569;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+  .server-box.target { border-color: #f59e0b; }
+  .server-icon { font-size: 2.5rem; margin-bottom: 8px; }
+  .server-label { font-size: 0.8rem; color: #94a3b8; }
+  .server-origin { font-size: 0.8rem; font-family: monospace; color: #38bdf8; margin-top: 4px; }
+
+  /* 请求箭头 */
+  .arrow-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .arrow {
+    font-size: 1.8rem;
+    color: #f59e0b;
+  }
+  .arrow-label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    background: #1e293b;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  /* 结果面板 */
+  .result {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.4s;
+  }
+  .result.success { background: #064e3b; border: 1px solid #10b981; color: #6ee7b7; }
+  .result.blocked { background: #450a0a; border: 1px solid #ef4444; color: #fca5a5; }
+  .result.info { background: #1e293b; border: 1px solid #475569; color: #94a3b8; }
+
+  /* 解释区 */
+  .explanation {
+    margin-top: 20px;
+    padding: 20px;
+    background: #0f172a;
+    border-radius: 12px;
+    border-left: 4px solid #38bdf8;
+    line-height: 1.7;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+  }
+  .explanation strong { color: #38bdf8; }
+  .explanation code {
+    background: #1e293b;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #f59e0b;
+  }
+
+  /* 代理流程 */
+  .proxy-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .proxy-node {
+    background: #1e3a5f;
+    border: 1px solid #38bdf8;
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 0.85rem;
+    text-align: center;
+    font-weight: 600;
+  }
+  .proxy-arrow { font-size: 1.5rem; color: #38bdf8; }
+
+  .tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #334155;
+    color: #94a3b8;
+  }
+  .tag.highlight { background: #1e3a5f; color: #38bdf8; }
+
+  button.play {
+    margin-top: 25px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    border: none;
+    background: #38bdf8;
+    color: #0f172a;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  button.play:hover { background: #7dd3fc; }
+</style>
+</head>
+<body>
+
+<h1>🌐 CORS 跨域问题 — 可视化</h1>
+<p class="subtitle">同源策略：协议 + 域名 + 端口 三者相同才算同源</p>
+
+<div class="scenarios">
+  <button class="scenario active" data-scene="blocked">❌ 跨域被阻止</button>
+  <button class="scenario" data-scene="same-origin">✅ 同源请求</button>
+  <button class="scenario" data-scene="proxy">🔁 Vite 代理方案</button>
+  <button class="scenario" data-scene="cors-header">✅ 后端 CORS 头</button>
+</div>
+
+<div class="stage" id="stage"></div>
+
+<script>
+const scenes = {
+  'blocked': {
+    pageOrigin: 'localhost:5174',
+    apiOrigin: 'localhost:3000',
+    sameOrigin: false,
+    result: 'blocked',
+    resultText: '❌ 被浏览器拦截！',
+    resultNote: 'Access-Control-Allow-Origin 缺失',
+    explanation: `
+      <strong>这就是跨域问题：</strong><br><br>
+      你在 <code>localhost:5174</code>（前端页面）发起了一个到 <code>localhost:3000</code>（后端API）的 AJAX 请求。<br><br>
+      虽然都是 localhost，但<strong>端口不同</strong>（5174 ≠ 3000），浏览器判定这是<strong>不同源</strong>。<br><br>
+      浏览器发送请求后，后端其实<strong>正常返回了数据</strong>，但浏览器检查响应头中没有
+      <code>Access-Control-Allow-Origin</code>，于是<strong>拦截</strong>了响应，JS 代码拿不到数据，控制台报错：
+      <br><br><code style="color:#ef4444;">❌ blocked by CORS policy: No 'Access-Control-Allow-Origin' header</code>
+    `,
+    tags: ['跨域请求', '端口不同', '被拦截']
+  },
+  'same-origin': {
+    pageOrigin: 'localhost:5174',
+    apiOrigin: 'localhost:5174',
+    sameOrigin: true,
+    result: 'success',
+    resultText: '✅ 同源请求，正常通过！',
+    resultNote: '协议+域名+端口完全相同',
+    explanation: `
+      <strong>同源请求不受限制：</strong><br><br>
+      前端和后端都在 <code>localhost:5174</code>，<strong>协议、域名、端口完全一致</strong>。<br><br>
+      浏览器认为这是"自己人"，不会拦截。这也是为什么在开发时可以直接请求同域下的资源。<br><br>
+      <strong>但实际项目中</strong>，前后端通常部署在不同端口/域名下，所以跨域问题是常态。
+    `,
+    tags: ['同源', '不拦截']
+  },
+  'proxy': {
+    pageOrigin: 'localhost:5174',
+    apiOrigin: 'localhost:3000',
+    sameOrigin: false,
+    result: 'success',
+    resultText: '✅ 通过 Vite 代理，正常获取数据！',
+    resultNote: 'Node.js 转发 → 绕过浏览器限制',
+    explanation: `
+      <strong>Vite 代理是如何绕过跨域的：</strong><br><br>
+      <strong>1.</strong> 前端请求 <code>/api/users</code> → 发到同源的 <code>localhost:5174</code><br>
+      <strong>2.</strong> Vite Dev Server (Node.js) 收到请求，转发到 <code>localhost:3000/users</code><br>
+      <strong>3.</strong> Node.js 拿到响应，返回给浏览器<br><br>
+      <strong>关键点：</strong>跨域限制是<strong>浏览器</strong>的安全策略，不是服务器的限制！<br>
+      Node.js 作为服务端发请求不受此限制，所以 Vite 在中间做"二传手"绕过了限制。<br><br>
+      这就是你 <code>vite.config.js</code> 里配的 proxy 原理 👇
+    `,
+    tags: ['前端→Vite→后端', 'Node.js转发', '绕过浏览器'],
+    showProxy: true
+  },
+  'cors-header': {
+    pageOrigin: 'localhost:5174',
+    apiOrigin: 'localhost:3000',
+    sameOrigin: false,
+    result: 'success',
+    resultText: '✅ 后端配置了 CORS，浏览器放行！',
+    resultNote: 'Access-Control-Allow-Origin: *',
+    explanation: `
+      <strong>后端设置 CORS 响应头：</strong><br><br>
+      后端返回响应时加上 HTTP 头：<code>Access-Control-Allow-Origin: *</code><br><br>
+      浏览器检查到这个头之后，<strong>主动放行</strong>，JS 就能拿到数据了。<br><br>
+      这是在<strong>后端</strong>解决跨域的方式，比如 Express 中可以：
+      <br><br><code style="display:block;padding:12px;border-radius:6px;">
+      const cors = require('cors')<br>
+      app.use(cors())  ← 一行搞定
+      </code><br>
+      <strong>对比：</strong>代理方案是<strong>前端开发阶段</strong>的方案，CORS 头是<strong>后端部署</strong>的方案。
+    `,
+    tags: ['后端方案', 'HTTP头', '生产环境']
+  }
+};
+
+function renderScene(key) {
+  const s = scenes[key];
+  const stage = document.getElementById('stage');
+
+  const originColor = s.sameOrigin ? '#10b981' : (s.result === 'blocked' ? '#ef4444' : '#38bdf8');
+  const arrowColor = s.sameOrigin ? '#10b981' : '#f59e0b';
+  const arrowText = s.sameOrigin ? '同源请求 ✅' : (key === 'proxy' ? '假装同源请求 /api/xxx' : '跨域请求 ⚠️');
+
+  let proxyHTML = '';
+  if (s.showProxy) {
+    proxyHTML = `
+      <div class="proxy-flow">
+        <div class="proxy-node">🌐 浏览器<br><small>localhost:5174</small></div>
+        <span class="proxy-arrow">→ /api/xxx →</span>
+        <div class="proxy-node" style="background:#0f172a;">⚡ Vite Dev Server<br><small>Node.js 代理转发</small></div>
+        <span class="proxy-arrow">→ /xxx →</span>
+        <div class="proxy-node">🖥️ 后端 API<br><small>localhost:3000</small></div>
+      </div>
+      <p style="text-align:center;color:#94a3b8;margin-top:14px;font-size:0.85rem;">
+        💡 请求先到 Vite（同源），Vite 再转发到后端（非浏览器环境，无跨域限制）
+      </p>
+    `;
+  }
+
+  stage.innerHTML = `
+    <div class="browser">
+      <div class="browser-url">
+        <span class="lock">🔒</span>
+        <span>https://</span><span style="color:#10b981;">${s.pageOrigin}</span><span>/index.html</span>
+      </div>
+      <div class="browser-page">
+        <!-- 前端页面 -->
+        <div class="server">
+          <div class="server-icon">📄</div>
+          <div class="server-label">前端页面</div>
+          <div class="server-origin">${s.pageOrigin}</div>
+        </div>
+
+        <!-- 请求动画区 -->
+        <div class="arrow-area">
+          <div class="arrow-label">${arrowText}</div>
+          <div class="arrow" style="font-size:2rem;color:${arrowColor};">➡️</div>
+          <div class="arrow" style="font-size:1rem;color:${arrowColor};transform:rotateY(180deg);margin-top:-12px;">➡️</div>
+          <div class="arrow-label">响应 ↓</div>
+        </div>
+
+        <!-- 后端 API -->
+        <div class="server">
+          <div class="server-box ${s.sameOrigin ? '' : 'target'}">
+            <div class="server-icon">🖥️</div>
+            <div class="server-label">后端 API</div>
+            <div class="server-origin" style="color:${originColor};">${s.apiOrigin}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 结果 -->
+    <div class="result ${s.result}">
+      ${s.resultText}
+      <div style="font-size:0.8rem;margin-top:4px;opacity:0.8;">${s.resultNote}</div>
+    </div>
+
+    ${proxyHTML}
+
+    <div class="tags">
+      ${s.tags.map(t => `<span class="tag highlight">${t}</span>`).join('')}
+    </div>
+
+    <div class="explanation">${s.explanation}</div>
+  `;
+}
+
+// 初始渲染
+renderScene('blocked');
+
+// 切换场景
+document.querySelectorAll('.scenario').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.scenario').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderScene(btn.dataset.scene);
+  });
+});
+</script>
+
+</body>
+</html>

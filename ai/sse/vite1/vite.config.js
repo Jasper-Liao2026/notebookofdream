@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  //发送了一个请求vite会介入
   server: {
     //代理
     proxy:{

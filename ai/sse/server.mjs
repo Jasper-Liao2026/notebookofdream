@@ -26,7 +26,7 @@ app.get('/stream', async (req, res) => {
     //     prompt:req.query.prompt,
     // })
     const {prompt} = req.query;
-    const endpoint = 'http://api.deepseek.com/v1/chat/completions'
+    const endpoint = 'http://api.deepseek.com/v1/chat/completions';
     try{
         const response = await fetch(endpoint,{
             method:'POST',

@@ -54,7 +54,7 @@ function App() {
   // 组件生命周期， 副作用
   // 组件挂载后， 附带做什么
   useEffect(() => {
-    console.log('组价已经挂载完成');
+    console.log('组价已经挂载完成');//简单跑一次的函数，不会重复跑
     
     // setTimeout(() => {
       // setStatus('ready');
@@ -131,7 +131,7 @@ function App() {
           }
           {/* 
           vue 添加事件 @click 
-          react 添加事件 onClick 不要去另外发明 大佬骄傲
+          react 添加事件 onClick 不要去另外发明
           HuggingFace 社区下载 开源模型 model-id */}
           <button
           className="border px-4 py-2 rounded-lg bg-blue-400

@@ -25,12 +25,12 @@ const CHUNK_SIZE = 500;
 const EPUB_FILE = './天龙八部.epub';
 const ADDRESS = process.env.MILVUS_ADDRESS;
 const TOKEN = process.env.MILVUS_TOKEN;
-const {name:BOOK_NAME}= parse(EPUB_FILE);
+const {name:BOOK_NAME} = parse(EPUB_FILE);
 
 //初始化embeddings模型
 const embeddings = new OpenAIEmbeddings({
     apiKey:process.env.OPENAI_API_KEY,
-    model:process.env.EMBEDDINGS_MODEL_NAME,
+    model:process.env.EMBEDDING_MODEL_NAME,
     configuration:{
         baseURL:process.env.OPENAI_BASE_URL,
     },
@@ -128,12 +128,65 @@ async function loadAndProcessEPubStreaming(bookId){
             chunkOverlap:50,
         })
         let totalInserted = 0;// 计数
-        let documentLen =document.length;
-        for(let chapterIndex = 0;chapterIndex<document.length;chapterIndex++){
+        const documentLen = documents.length;
+        for(let chapterIndex = 0;chapterIndex<documents.length;chapterIndex++){
+            //Document
+            const chapter = documents[chapterIndex];
+            const chapterContent = chapter.pageContent;
+            console.log(`处理第${chapterIndex + 1}/ ${documentLen} 章...`);
 
+            const chunks = await textSplitters.splitText(chapterContent);
+            console.log(`拆分为${chunks.length}个片段`);
+            if(chunks.length===0){
+                console.log(`跳过空章节\n`);
+                continue;
+            }
+            console.log(`生成向量并插入中...`);
+            const insertedCount = await insertChunksBatch(
+                chunks,
+                bookId,
+                chapterIndex +1
+            );
+            totalInserted += insertedCount;
+            console.log(`已插入${insertedCount}条记录`);
         }
+        console.log(`\n总共插入${totalInserted}条记录\n`);
+        return totalInserted;
     }catch(err){
         console.error('加载EPUB时出错', err);
+    }
+}
+//将一批chunk 插入向量数据库
+async function insertChunksBatch(chunks,bookId,chapterNum){
+    try{
+        //为空
+        if(chunks.length===0){
+            return 0;
+        }
+        const insertData = await Promise.all(
+            chunks.map(async(chunk,chunkIndex)=>{
+                const vector = await getEmbedding(chunk);
+                return{
+                    id:`${bookId}_${chapterNum}_${chunkIndex}`,
+                    book_id:bookId,
+                    book_name:BOOK_NAME,
+                    chapter_num:chapterNum,
+                    index:chunkIndex,
+                    content:chunk,
+                    vector:vector,
+                }
+            })
+        );
+        const insertResult = await client.insert({
+            collection_name:COLLECTION_NAME,
+            data:insertData,
+        })
+
+        // 函数的返回结果要有可预测性 一致
+        return Number(insertResult.insert_cnt) || 0 ;
+    }catch(err){
+        console.error(`插入章节${chapterNum}的数据时出错:`,err.message);
+        throw err;
     }
 }
 

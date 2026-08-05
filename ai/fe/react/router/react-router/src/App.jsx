@@ -1,0 +1,56 @@
+import{
+  lazy,
+  Suspense
+} from 'react';
+
+import{
+  //location.hash 
+  HashRouter as Router,//前端路由 #/ hashchange
+  Routes,//路由配置数组 都是数组
+  Route//路由配置项
+}from 'react-router-dom';
+import Navigation from './components/Navigation';
+//SPA,动态切换多个界面
+//下载，执行 影响首页加载速度
+//只要加载当前页面就好，路由懒加载
+// import Home from './pages/Home';
+// import About from './pages/about'
+// import 函数
+const Home = lazy(()=>import('./pages/Home'));
+const About = lazy(()=>import('./pages/about'));
+const UserProfile = lazy(()=>import('./pages/UserProfile'));
+const NotFound = lazy(()=>import('./pages/NotFound'));
+const Products = lazy(() => import('./pages/Products'));
+const ProductDetail = lazy(() => import('./pages/Products/Detail'));
+
+const App= ()=>{
+  return (
+    <>
+    {/* 前端路由接管一切 */}
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
+      {/* 导航栏组件 */}
+      <Navigation />
+      <div id="container">
+        {/* 动态页面切换部分 既是配置，又是出现的地方*/}
+        <Routes>
+          {/* 有且只有一个Route显示 当前location.hash
+          对应页面级别组件 */}
+          <Route path='/' element={<Home />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/user/:id' element={<UserProfile/>} />
+          {/* 贪婪匹配所有，最后404兜底 */}
+          <Route path="/products" element={<Products />}>
+            {/* 二级路由 */}
+           <Route path=':productId' element={<ProductDetail/>}/>
+          </Route>
+          <Route path="*" element={<NotFound />} />
+
+        </Routes>
+      </div>
+      </Suspense>
+    </Router>
+    </>
+  )
+}
+export default App

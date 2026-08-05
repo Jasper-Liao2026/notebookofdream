@@ -1,10 +1,8 @@
 import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import {join} from 'path';
+dotenv.config({path:join(import.meta.dirname,'.env')});
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-dotenv.config({ path: join(__dirname, '.env') });
+
 import {ChatOpenAI} from '@langchain/openai'
 //把大模型输出解析成纯字符串
 //chain 上，不用那么复杂，直接给我们content内容

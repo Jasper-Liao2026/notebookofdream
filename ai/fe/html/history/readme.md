@@ -49,3 +49,14 @@ url 中，hash部分 # 开始
 锚链接
 hash作为url的一部分，标记传统PC长页面某一部分，坐电梯一样直达
 做前端路由 #/ #/about  不会重新渲染，又能满足url 和资源的一一对应关系，前端路由，当hash部分改变的时候 hashchange事件，dom或组件替换
+
+## 路由对象
+- SPA 需要前端路由
+- url改变，对应不同的资源resetful设计理念
+hash #/pay browserRouter history
+- navigator 导航栏
+- location 地址栏
+- history 历史记录
+- Link 组件
+    to 
+    replace

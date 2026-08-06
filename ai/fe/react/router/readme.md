@@ -22,3 +22,17 @@ React 开发全家桶
 - 动态路由
 - 404 Not Found
 
+- 有状态？
+    - 请求头 token Authorization 
+    - Cookie小饼干
+    - localStorage 存储 login 状态
+    user admin
+    password 123456
+- 组件内部的子组件
+    props.children 拿到组件申明的内部所有的子节点
+    model 弹窗组件  mask 蒙层
+    窗体 头部，尾部 主题部分children传入
+    定制性
+    <Model>
+    {children 定制}
+    <Model>

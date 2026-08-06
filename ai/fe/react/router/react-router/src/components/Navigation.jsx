@@ -10,6 +10,7 @@ function Navigation() {
         <li><Link to="/">Home</Link></li>
         <li><Link to="/about">About</Link></li>
         <li><Link to="/user/123">小家</Link></li>
+        <li><Link to="/Pay">支付</Link></li>
       </ul>
     </nav>
   );

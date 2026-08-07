@@ -36,3 +36,11 @@ React 开发全家桶
     <Model>
     {children 定制}
     <Model>
+
+## 路由两种选型
+- hashRouter
+    url 局部改变 hash 部分
+    url 有点为了前端路由，url有点丑，后端路由不太一样
+    /pay   #/pay
+- BrowserRouter 不用hash方案实现SPA
+    

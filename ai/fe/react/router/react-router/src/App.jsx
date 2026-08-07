@@ -9,7 +9,8 @@ import{
   
   BrowserRouter as Router,//前端路由 #/ hashchange
   Routes,//路由配置数组 都是数组
-  Route//路由配置项
+  Route,//路由配置项
+  Navigate//重定向组件
 }from 'react-router-dom';
 import Navigation from './components/Navigation';
 //SPA,动态切换多个界面
@@ -52,7 +53,7 @@ const App= ()=>{
           
 
           <Route path='/old-path' element={
-            <Navigation replace to="/new-path" />
+            <Navigate to="/new-path" replace />
           }/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/pay' element={

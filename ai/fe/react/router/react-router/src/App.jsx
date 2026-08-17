@@ -53,7 +53,8 @@ const App= ()=>{
           
 
           <Route path='/old-path' element={
-            <Navigate to="/new-path" replace />
+            <Navigate to="/new-path" replace />//路由重新定向，
+            //可能是因为页面迁移，或者页面重命名
           }/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/pay' element={

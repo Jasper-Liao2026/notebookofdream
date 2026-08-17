@@ -80,3 +80,32 @@ App Router 文件即路由 rustful
     - html
     - nav 侧边栏，导航栏
     - children page.js
+
+
+head
+  title
+  meta keywords description
+body
+  page.js
+- nav 侧边栏，导航栏
+- section 语义化标签
+- children page.js
+- to be continue 注释大法
+  规划未来做的，有利于团队协作，记忆，维护，注释写好要做的事情
+
+## 数据服务
+- 选择了redis key:value 的NOSQL 内存数据库
+6379 端口 没有数据表，不是关系型，不用SQL驱动，在内存中，有点像localStorage 直接
+key:value 
+  高级的地方 对不同类型的数据 有优化的存储方式 不同的方法
+  字符串 直接get/set 哈希 hget/hset
+ 缓存、计数器、榜单、
+ redis + MYSQL 数据库有读写的I/O瓶颈
+ 掘金首页，文章列表 几分钟之内可能是不变的
+ 第一个用户来的时候 查mysql 数据库 posts列表 key:value 存到redis中
+ 下一个用户来的时候 查redis 缓存
+- lib 目录下redis.js 
+  next.js 数据业务逻辑都放在lib目录下
+  / -> lib notes -> sidebar ->seo 良好的导航
+- /app/api/route.js？
+  数据接口 rpc 远程调用

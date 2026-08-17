@@ -1,11 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-
+import {getAllNotes} from '@/lib/redis';
+import SidebarNoteList from './SidebarNoteList';
 export default async function Sidebar(){
+    const notes = await getAllNotes();
+    console.log(notes);
     return(
-        <>
-        sidebar
-        
+        <>        
         <section className="col sidebar">
             <Link href="/" className="sidebar-header">
             <img
@@ -20,6 +21,12 @@ export default async function Sidebar(){
         </section>
         <section className="sidebar-menu" role="menubar">
             {/* SideSearchField */}
+        </section>
+        <section>
+            <nav>
+                {/* SiderbarNoteList */}
+                <SidebarNoteList notes={notes} />
+            </nav>
         </section>
         </>
     )

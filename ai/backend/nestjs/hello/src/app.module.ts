@@ -9,4 +9,5 @@ import { AppService } from './app.service';
   controllers: [AppController],//控制器 校验，简单逻辑
   providers: [AppService],//data service 复杂业务
 })
-export class AppModule {}
+export class AppModule {
+}

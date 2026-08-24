@@ -15,3 +15,8 @@ export async function getAllNotes(){
     }
     return await redis.hgetall('notes');
 }
+
+export async function getNote(id){
+    const note = await redis.hget('notes', id);
+    return note ? JSON.parse(note) : null;
+}

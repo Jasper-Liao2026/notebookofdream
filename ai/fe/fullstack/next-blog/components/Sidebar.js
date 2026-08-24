@@ -4,9 +4,7 @@ import {getAllNotes} from '@/lib/redis';
 import SidebarNoteList from './SidebarNoteList';
 export default async function Sidebar(){
     const notes = await getAllNotes();
-    console.log(notes);
     return(
-        <>        
         <section className="col sidebar">
             <Link href="/" className="sidebar-header">
             <img
@@ -18,16 +16,11 @@ export default async function Sidebar(){
             />
             <strong>LLM Notes</strong>
             </Link>
-        </section>
-        <section className="sidebar-menu" role="menubar">
-            {/* SideSearchField */}
-        </section>
-        <section>
+            <section className="sidebar-menu" role="menubar">
+            </section>
             <nav>
-                {/* SiderbarNoteList */}
                 <SidebarNoteList notes={notes} />
             </nav>
         </section>
-        </>
     )
 }

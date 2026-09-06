@@ -23,3 +23,12 @@ Memory 三种思路 截断(slice(-4))、总结、检索
 用addMessage 添加HumanMessage,AIMessage,toolMessage
 调用大模型，返回AIMessage直接添加到history
 getMessage() 获取所有message 每个message对象
+
+## 长时记忆
+- 文件
+- 向量数据库
+
+## memory 逻辑
+- 存储逻辑
+- 管理逻辑
+    截断 (slice(-4))、总结、检索

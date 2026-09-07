@@ -32,3 +32,4 @@ getMessage() 获取所有message 每个message对象
 - 存储逻辑
 - 管理逻辑
     截断 (slice(-4))、总结、检索
+- trimMessages 帮我们实现了基于token 的截断

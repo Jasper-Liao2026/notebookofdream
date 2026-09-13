@@ -34,3 +34,7 @@ getMessage() 获取所有message 每个message对象
     截断 (slice(-4))、总结、检索
 - trimMessages 帮我们实现了基于token 的截断
 - getBufferString history messages 转为字符串
+
+开发应该聊天应用 的话
+每聊20条就触发一次总结，生成摘要，存入milvus 向量数据库
+从milvus 取出对话历史，接着回答，agent更懂我们，Harness 的Memory 模块

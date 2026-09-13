@@ -1,0 +1,10 @@
+{
+  "name": "demo2",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@langchain/openai": "^1.5.11",
+    "@zilliz/milvus2-sdk-node": "^3.0.5",
+    "dotenv": "^17.4.2"
+  }
+}

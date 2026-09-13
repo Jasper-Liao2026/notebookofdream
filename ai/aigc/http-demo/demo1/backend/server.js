@@ -4,6 +4,7 @@ const path = require('path');
 
 const PORT = 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
+const INDEX_FILE = path.join(__dirname, '..', 'frontend', 'index.html');
 
 const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,6 +14,26 @@ const server = http.createServer((req, res) => {
     if (req.method === 'OPTIONS') {
         res.writeHead(200);
         res.end();
+        return;
+    }
+
+    if (req.method === 'GET' && req.url === '/') {
+        const readStream = fs.createReadStream(INDEX_FILE, { encoding: 'utf8' });
+        
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        
+        readStream.on('data', (chunk) => {
+            res.write(chunk);
+        });
+        
+        readStream.on('end', () => {
+            res.end();
+        });
+        
+        readStream.on('error', (err) => {
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Failed to read index.html');
+        });
         return;
     }
 

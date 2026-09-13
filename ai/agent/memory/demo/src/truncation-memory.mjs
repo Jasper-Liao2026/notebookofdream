@@ -1,6 +1,6 @@
 // memory 管理的三个手段，截断，
 import {InMemoryChatMessageHistory} from '@langchain/core/chat_history';
-import {HumanMessage,AIMessage,trimMessages} from '@langchain/core/messages';
+import {HumanMessage,AIMessage,trimMessages,SystemMessage} from '@langchain/core/messages';
 
 async function messageCountTruncation(){
     const history = new InMemoryChatMessageHistory();

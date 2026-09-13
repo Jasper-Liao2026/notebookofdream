@@ -20,6 +20,9 @@ async function summarizeHistory(messages){
     const summaryPrompt = `请总结以下对话的核心内容，保留重要信息：${conversationText}
     总结：
     `;
+
+    //langchain 编排线性工作流 pipe
+    //langgraph 非线性工作流 graph
     const summaryResponse = await model.invoke([new SystemMessage(summaryPrompt)]);
     return summaryResponse.content;
 }
@@ -53,6 +56,19 @@ async function summarizationMemoryDemo(){
         console.log(`\n将被总结的消息数量：${messagesToSummarize.length}`);
 
         const summary = await summarizeHistory(messagesToSummarize);
+        await history.clear();
+        
+        for(const msg of recentMessages){
+            await history.addMessage(msg);
+        }
+
+        await history.addMessage(new AIMessage(summary));
+
+        const newMessages = await history.getMessages();
+
+        for(let mes of newMessages){
+            console.log(mes.constructor.name,mes.content);
+        }
     }
 }
 

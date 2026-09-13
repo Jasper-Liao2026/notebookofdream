@@ -33,3 +33,4 @@ getMessage() 获取所有message 每个message对象
 - 管理逻辑
     截断 (slice(-4))、总结、检索
 - trimMessages 帮我们实现了基于token 的截断
+- getBufferString history messages 转为字符串

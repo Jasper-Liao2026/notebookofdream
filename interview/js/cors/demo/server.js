@@ -16,6 +16,11 @@ const wss = new WebSocket.Server({server,path:'/ws'})
 //监听事件 有人链接
 wss.on('connection',(ws)=>{
     console.log('client connected');
+
+    ws.on('message',(msg)=>{
+        console.log('Received:',msg.toString());
+        ws.send('Hello from server!');
+    });
 })
 
 server.listen(8000,()=>{

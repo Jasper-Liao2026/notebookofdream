@@ -36,3 +36,17 @@
 
 - ws 库
     websocket 协议 实现
+    - 链接的时候 ，url ws://localhost:8000/ws
+    ws://localhost:8000/ws 分两步
+    1.http://localhost:8000 http 链接服务器 Web Server 找到  只需要一次
+    2.101 status code switch protocol 切换协议，websocket协议
+
+    基于事件双向通信
+
+websocket 协议可以跨域
+http(s)跨域：不同域名，不同端口，不同协议，浏览器因为安全问题，不能直接跨域请求
+
+websocket 协议 不需要遵守同源策略，可以跨域请求
+
+## websocket 双工，为何不用于llm的流式输出？
+一边生成一边输出，socket双向也可以

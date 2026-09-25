@@ -58,3 +58,6 @@ parser.parse()取出markdown 拿到json
 ## StructuredOutputParser
 - fromZodSchema
 - fromNamesDescription
+
+
+没必要用output parser 了，tool_call的参数，也能拿到结构化的数据，而且因为tool_calls llm机制，会更严格

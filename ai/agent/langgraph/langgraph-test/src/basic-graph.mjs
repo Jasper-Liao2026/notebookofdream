@@ -66,6 +66,6 @@ const graph = new StateGraph(StateAnnotation)
  * Mermaid 是一种文本到图表的工具，可以用简单的语法生成流程图
  * 这里用于可视化工作流的节点流转关系
  */
-const drawable = await graph.getGraphAsync();
-const mermaid = drawable.drawMermaid({withStyles:true});
+const drawable = await graph.getGraphAsync();   //获取图的内部结构
+const mermaid = drawable.drawMermaid({withStyles:true}); //转换为Mermaid语法
 console.log(mermaid)

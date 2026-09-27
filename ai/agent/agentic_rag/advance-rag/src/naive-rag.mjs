@@ -102,3 +102,22 @@ const graph = new StateGraph(GraphState)
  const drawable = await   graph.getGraphAsync();
  const mermaid = drawable.drawMermaid({withStyle:true});
  console.log(mermaid);
+
+ async function main(){
+    const question = "阿朱的结局是什么"
+    const kArg = 5;
+    console.log("链接到milvus...")
+    vectorStore = await Milvus.fromExistingCollection(embeddings,{
+        collectionName:COLLECTTION_NAME,
+        url:"localhost:19530",
+        textField:"content",
+        primaryField:"id",
+        vectorField:"vector",
+        indexCreateOptions:{
+            metric_type:"cosine",
+            index_type:"HNSW",
+            param:{M:16,efConstruction:}
+        }
+    })
+ }
+ main().catch(err=>console.error(err));

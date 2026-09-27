@@ -38,7 +38,7 @@ const app = graph.compile({
 })
 //多用户
 const user1 = { configuration:{thread_id:"用户-小张"}};
-const user2 = {configuration:{thread_id:"用户-小李"}};
+const user2 = { configuration:{thread_id:"用户-小李"}};
 const res1 = await app.invoke({},user1);
 console.log(res1);
 const res2 = await app.invoke({},user2);

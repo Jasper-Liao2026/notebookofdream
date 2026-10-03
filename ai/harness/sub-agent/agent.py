@@ -27,8 +27,9 @@ WORKDIR = Path.cwd()
 client = OpenAI(
     base_url = os.getenv("DEEPSEEK_BASE_URL"),
     api_key = os.getenv("DEEPSEEK_API_KEY"),
-
 )
+
+MODEL = os.getenv("DEEPSEEK_API_MODEL", "deepseek-chat")
 
 # 下面是被注释掉的测试代码，用于测试API连接
 # 调用OpenAI API创建聊天完成
@@ -164,13 +165,13 @@ def run_subagent(prompt:str)->str:
     #下标我不用，占位置
     for _ in range(30):
         response = client.chat.completions.create(
-            model = Model,
+            model = MODEL,
             messages = [{"role":"system","content":SUB_SYSTEM}] + sub_message,  # 系统消息 + 用户消息
             tools = CHILD_TOOLS,  # 子Agent可用的工具
             max_tokens = 8000
         )
         #取出模型返回的第一条消息对象
-        msg = response.choices[0].messages
+        msg = response.choices[0].message
         #把模型返回消息转成字典，加到对话历史，下一轮ai能用到
         sub_message.append(msg.model_dump())
 
@@ -301,7 +302,7 @@ PARENT_TOOLS  = CHILD_TOOLS + [
 def agent_loop(message:list):
     while True:
         response = client.chat.completions.create(
-            model = Model,
+            model = MODEL,
             messages = [{"role":"system","content":SYSTEM}] + message,  # 系统消息 + 用户消息
             tools = PARENT_TOOLS,  # 父Agent可用的工具
             max_tokens = 8000,  # 最大返回token数
@@ -338,7 +339,7 @@ def agent_loop(message:list):
                     "tool_call_id":tool_call.id,
                     "content":str(output)
                 })
-            messages.extend(results)
+            message.extend(results)
 
 if __name__ == "__main__":
     print("Subagent - fresh message,final text returns")

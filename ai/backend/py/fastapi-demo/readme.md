@@ -23,3 +23,4 @@ pip install "fastapi[standard]"
 uvicorn 是异步的web服务器，用来运行Fastapi项目
 pip install "uvicorn[standard]"
 python -m uvicorn 01.main:app --reload --port 8080
+

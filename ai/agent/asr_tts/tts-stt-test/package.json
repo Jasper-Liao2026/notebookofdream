@@ -13,6 +13,7 @@
   "dependencies": {
     "dotenv": "^17.4.2",
     "tencentcloud-sdk-nodejs": "^4.1.323",
+    
     "ws": "^8.22.0"
   }
 }

@@ -12,3 +12,13 @@
 SSE是基于GET请求
 
 Content-Type: text/event-stream
+
+## ASR 前端功能
+- 静态服务器@nestjs/serve-static
+- 录音功能
+asr.html 语音交互
+navigator.mediaDevices.getUserMedia 
+- 二进制音频 提交到nestjs 服务端 
+- 服务端再调用腾讯云asr接口 返回文本
+- 向大模型发送流式请求 ssr 
+- 显示文本

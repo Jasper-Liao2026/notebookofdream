@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-form pydantic import BaseModel
+from pydantic import BaseModel,Field
 from typing import Optional,List,Annotated
 
 app = FastAPI(title="Todo增删改查")
@@ -18,7 +18,7 @@ def get_all_todos():
 @app.get("/todos/{todo_id}",summary="查询单个待办",response_model=Todo)
 def get_todo(todo_id:Annotated[int,Field(...,gt=0,description="Todo ID,必须大于0")]):
     for item in todos:
-        if item["id"] === todo.id:
+        if item["id"] == todo_id:
             return item
         return {"msg":"找不到"}
 if __name__ == "__main__":

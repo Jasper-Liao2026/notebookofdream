@@ -19,6 +19,7 @@ class UserUpdate(BaseModel):
     username: str | None = Field(default=None, min_length=3, max_length=50)
     email: EmailStr | None = None
     password: str | None = Field(default=None, min_length=8, max_length=100)
+    is_active:bool|None = None
 
 class UserResponse(BaseModel):
     #user类，查询users orm 数据模型
@@ -29,4 +30,43 @@ class UserResponse(BaseModel):
     email: str
     is_active: bool
     created_at: datetime
-    
+
+## 文章模块 schema
+class PostCreate(BaseModel):
+    title:str = Field(min_length=3, max_length=200)
+    content:str = Field(min_length=1,max_length=5000)
+    published:bool = False
+
+class PostUpdate(BaseModel):
+    """更新请求体：字段可选，未传表示不修改"""
+    title: str | None = Field(default=None, min_length=3, max_length=200)
+    content: str | None = Field(default=None, min_length=1, max_length=5000)
+    published: bool | None = None
+
+class PostResponse(BaseModel):
+    """返回的文章数据"""
+    #Post实例 -> ConfigDict 转化为dict类型
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    title: str
+    content: str
+    published: bool
+    created_at: datetime
+    updated_at: datetime
+    user_id: int
+
+class PostWithAuthor(PostResponse):
+    """列表场景：附带作者信息"""
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    title: str
+    content: str
+    published: bool
+    created_at: datetime
+    author: UserResponse
+
+class PostUpdate(BaseModel):
+    """更新请求体：字段可选，未传表示不修改"""
+    title: str | None = Field(default=None, min_length=3, max_length=200)
+    content: str | None = Field(default=None, min_length=1, max_length=5000)
+    published: bool | None = None

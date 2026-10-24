@@ -35,3 +35,9 @@ uvicorn ASGI(Asynchronous Server Gateway Interface) 服务器 ，负责把你的
 ## ORM 的开发流程
 - 创建的模型类 models.py
 - 根据restful 定义路由
+
+## 状态码
+404 Not Found
+201 Created
+204 No Content
+400 Bad Request

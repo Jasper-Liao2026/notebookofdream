@@ -13,7 +13,7 @@ router = APIRouter(prefix="/users", tags=["用户管理"])
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(user_in: UserCreate, db: Session = Depends(get_db)):
 #controller-> service
-    existing = crud.get_user_by_email()
+    existing = crud.get_user_by_email(db, user_in.email)
     if existing:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -46,3 +46,14 @@ def update_user(user_id: int, user_in: UserUpdate, db: Session = Depends(get_db)
             detail="用户不存在",
         )
     return crud.update_user(db, user, user_in)
+
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    user = crud.get_user(db, user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="用户不存在",
+        )
+    crud.delete_user(db, user)
+    return None

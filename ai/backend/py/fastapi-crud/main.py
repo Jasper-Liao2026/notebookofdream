@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from database import engine,Base
-from routers import users
-
+from routers import users, posts
 import models  # 必须先导入模型类，Base.metadata 才会登记 users / posts
 #python 实例化不用new
 #自动将__init__方法调用
@@ -23,3 +22,5 @@ def root():
 
 #模块路由
 app.include_router(users.router)
+#文章模块路由
+app.include_router(posts.router)

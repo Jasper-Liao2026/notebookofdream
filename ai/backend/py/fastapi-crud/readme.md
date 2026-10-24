@@ -31,3 +31,7 @@ fastapi 自动生成文档
 ## 启动http server
 uvicorn main:app --reload
 uvicorn ASGI(Asynchronous Server Gateway Interface) 服务器 ，负责把你的fastapi 应用跑起来
+
+## ORM 的开发流程
+- 创建的模型类 models.py
+- 根据restful 定义路由

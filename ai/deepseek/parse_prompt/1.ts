@@ -12,9 +12,9 @@ function parsePrompt<T extends PromptVars>(
         ...defaults,
         ...vars,
     };
-    return template.replace(
+    return template.replace(//替换所有占位符为实际值
         /\{(\w+)\}/g,
-        (_,key:string)=>{
+        (_,key:string)=>{//替换占位符为实际值
             if(!(key in values)){
                 throw new Error(`Missing required variable ${key}`)
             }

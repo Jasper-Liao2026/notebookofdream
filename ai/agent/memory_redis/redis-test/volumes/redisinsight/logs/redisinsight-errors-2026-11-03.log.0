@@ -1,0 +1,2 @@
+11/3/2026, 12:40:04 PM | ERROR | GlobalNotificationProvider | Unable to download or parse notifications json. socket hang up | [object Object]
+11/3/2026, 12:40:04 PM | ERROR | GlobalNotificationProvider | Unable to sync notifications with remote | [object Object]

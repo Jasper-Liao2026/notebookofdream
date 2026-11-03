@@ -110,3 +110,12 @@ geodist key 名称1 名称2 km
 
 ## 基于redis 实现agent 短期记忆的存储
 
+基于redis 实现了短期记忆的存储，具体的摘要+截断的压缩逻辑是用deepagents的
+summarizationMiddleware 中间件
+
+Agent基本用redis做短期记忆存储，用psql做历史消息，长期记忆存储
+
+我们学了Redis 的7中数据类型
+String Hash List Set zset bitmap geo
+
+一般会把每轮消息存入psql做历史消息，还能用于基于向量做长期记忆的检索

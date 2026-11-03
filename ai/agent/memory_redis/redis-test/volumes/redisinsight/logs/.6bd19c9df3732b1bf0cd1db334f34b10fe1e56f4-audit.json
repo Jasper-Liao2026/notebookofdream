@@ -26,6 +26,11 @@
             "date": 1793602036231,
             "name": "/data/logs/redisinsight-2026-11-02.log.2026",
             "hash": "b28b09ce8e0be730465bdaed12bf9c0609fea14fc2dd8d22579fc980ead4e261"
+        },
+        {
+            "date": 1793682837969,
+            "name": "/data/logs/redisinsight-2026-11-03.log.0",
+            "hash": "8d2af7ff71b45ebc7765f0faf438ff4dc13e01e67a5fa2c809fef0e1205caa21"
         }
     ]
 }

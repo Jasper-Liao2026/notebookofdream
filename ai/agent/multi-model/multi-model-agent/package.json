@@ -1,0 +1,19 @@
+{
+  "name": "multi-model-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@langchain/openai": "^1.5.11",
+    "ali-oss": "^6.23.0",
+    "dashscope-sdk-official": "^1.27.0",
+    "dotenv": "^17.4.2"
+  }
+}

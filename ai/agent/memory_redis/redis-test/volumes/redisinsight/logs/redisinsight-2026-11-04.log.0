@@ -1,2 +1,5 @@
 11/4/2026, 4:25:45 AM | ERROR | GlobalNotificationProvider | Unable to download or parse notifications json. socket hang up | [object Object]
 11/4/2026, 4:25:45 AM | ERROR | GlobalNotificationProvider | Unable to sync notifications with remote | [object Object]
+11/4/2026, 6:25:42 AM | ERROR | GlobalNotificationProvider | Unable to download or parse notifications json. socket hang up | [object Object]
+11/4/2026, 6:25:42 AM | ERROR | GlobalNotificationProvider | Unable to sync notifications with remote | [object Object]
+11/4/2026, 12:42:37 PM | INFO |  | Signal SIGTERM received. Shutting down... | [object Object]
